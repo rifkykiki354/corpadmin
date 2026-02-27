@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Website Saya</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shop - Toko Saya</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Halo Dunia!</h1>
-    <p>Ini adalah website pertama saya yang dihosting di GitHub.</p>
+
+    <header>
+        <div class="top-bar">
+            <span>Support: (012) 800 456 789</span>
+            <div class="top-links">USD | English | Login | Wishlist | Checkout</div>
+        </div>
+        
+        <div class="main-header">
+            <div class="logo">
+                <img src="https://via.placeholder.com/150x50?text=ONLINE+SHOP" alt="Logo">
+            </div>
+            <div class="search-box">
+                <select><option>All Categories</option></select>
+                <input type="text" placeholder="What do you need?">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-bag"></i>
+                <span>MY CART: $0.00</span>
+            </div>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" class="active">HOME</a></li>
+                <li><a href="#">MEN</a></li>
+                <li><a href="#">WOMEN</a></li>
+                <li><a href="#">BABY & KIDS</a></li>
+                <li><a href="#">FURNITURE</a></li>
+                <li><a href="#">BOOKS & MEDIA</a></li>
+                <li><a href="#">AUTO & SPORTS</a></li>
+                <li><a href="#">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-main">
+                <img src="https://via.placeholder.com/800x400" alt="Hero Image">
+                <div class="hero-text">Deals of the Day</div>
+            </div>
+            <div class="hero-side">
+                <img src="https://via.placeholder.com/300x190" alt="Side 1">
+                <img src="https://via.placeholder.com/300x190" alt="Side 2">
+            </div>
+        </section>
+
+        <h2 class="section-title">New Products</h2>
+        <section class="product-grid">
+            <div class="product-card">
+                <span class="badge new">New!</span>
+                <img src="https://via.placeholder.com/200" alt="Product">
+                <h3>Control Bluetooth LED</h3>
+                <p class="price">$118.91</p>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200" alt="Product">
+                <h3>Samsung Galaxy S2</h3>
+                <p class="price">$225.99</p>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="product-card">
+                <span class="badge sale">Sale!</span>
+                <img src="https://via.placeholder.com/200" alt="Product">
+                <h3>Smart TV LED</h3>
+                <p class="price">$412.79</p>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200" alt="Product">
+                <h3>iPhone 7 Plus</h3>
+                <p class="price">$228.98</p>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>
