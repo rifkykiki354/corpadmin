@@ -3,89 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Shop - Toko Saya</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-
-    <header>
-        <div class="top-bar">
-            <span>Support: (012) 800 456 789</span>
-            <div class="top-links">USD | English | Login | Wishlist | Checkout</div>
-        </div>
+    <title>Sistem Administrasi Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        <div class="main-header">
-            <div class="logo">
-                <img src="https://via.placeholder.com/150x50?text=ONLINE+SHOP" alt="Logo">
-            </div>
-            <div class="search-box">
-                <select><option>All Categories</option></select>
-                <input type="text" placeholder="What do you need?">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            <div class="cart">
-                <i class="fas fa-shopping-bag"></i>
-                <span>MY CART: $0.00</span>
-            </div>
-        </div>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f8fafc;
+        }
 
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#" class="active">HOME</a></li>
-                <li><a href="#">MEN</a></li>
-                <li><a href="#">WOMEN</a></li>
-                <li><a href="#">BABY & KIDS</a></li>
-                <li><a href="#">FURNITURE</a></li>
-                <li><a href="#">BOOKS & MEDIA</a></li>
-                <li><a href="#">AUTO & SPORTS</a></li>
-                <li><a href="#">CONTACT US</a></li>
-            </ul>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            background: white;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .action-btn {
+            transition: transform 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .empty-illustration {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navigation Bar -->
+        <nav class="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
+                        <i class="fas fa-chart-pie text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">CorpAdmin <span class="text-blue-600">Pro</span></h1>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Enterprise Edition</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <div class="flex flex-col items-end">
+                        <span id="live-clock" class="text-sm font-bold text-slate-700">00:00:00</span>
+                        <span class="text-[10px] text-slate-400 font-medium uppercase">Selasa, 28 April 2026</span>
+                    </div>
+                </div>
+            </div>
         </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-main">
-                <img src="https://via.placeholder.com/800x400" alt="Hero Image">
-                <div class="hero-text">Deals of the Day</div>
-            </div>
-            <div class="hero-side">
-                <img src="https://via.placeholder.com/300x190" alt="Side 1">
-                <img src="https://via.placeholder.com/300x190" alt="Side 2">
-            </div>
-        </section>
+        <main class="flex-grow p-4 md:p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Tab Selector Container -->
+                <div class="glass-card rounded-2xl p-2 flex space-x-1 overflow-x-auto hide-scroll-bar shadow-sm">
+                    <button onclick="switchTab('karyawan')" id="btn-karyawan" class="tab-btn active flex-1 min-w-[140px] px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-center space-x-2">
+                        <i class="fas fa-user-tie"></i> <span>Karyawan</span>
+                    </button>
+                    <button onclick="switchTab('inventaris')" id="btn-inventaris" class="tab-btn flex-1 min-w-[140px] px-4 py-3 rounded-xl font-bold text-sm text-slate-500 flex items-center justify-center space-x-2">
+                        <i class="fas fa-box-open"></i> <span>Inventaris</span>
+                    </button>
+                    <button onclick="switchTab('keuangan')" id="btn-keuangan" class="tab-btn flex-1 min-w-[140px] px-4 py-3 rounded-xl font-bold text-sm text-slate-500 flex items-center justify-center space-x-2">
+                        <i class="fas fa-wallet"></i> <span>Buku Kas</span>
+                    </button>
+                    <button onclick="switchTab('surat')" id="btn-surat" class="tab-btn flex-1 min-w-[140px] px-4 py-3 rounded-xl font-bold text-sm text-slate-500 flex items-center justify-center space-x-2">
+                        <i class="fas fa-file-contract"></i> <span>Arsip Surat</span>
+                    </button>
+                </div>
 
-        <h2 class="section-title">New Products</h2>
-        <section class="product-grid">
-            <div class="product-card">
-                <span class="badge new">New!</span>
-                <img src="https://via.placeholder.com/200" alt="Product">
-                <h3>Control Bluetooth LED</h3>
-                <p class="price">$118.91</p>
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200" alt="Product">
-                <h3>Samsung Galaxy S2</h3>
-                <p class="price">$225.99</p>
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-            </div>
-            <div class="product-card">
-                <span class="badge sale">Sale!</span>
-                <img src="https://via.placeholder.com/200" alt="Product">
-                <h3>Smart TV LED</h3>
-                <p class="price">$412.79</p>
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200" alt="Product">
-                <h3>iPhone 7 Plus</h3>
-                <p class="price">$228.98</p>
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-            </div>
-        </section>
-    </main>
+                <!-- Main Content Area -->
+                <div class="glass-card rounded-3xl shadow-xl overflow-hidden min-h-[500px]">
+                    <!-- Table Header Controls -->
+                    <div class="p-8 border-b border-gray-100 bg-white/50">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                            <div>
+                                <h2 id="current-title" class="text-2xl font-800 text-slate-900 tracking-tight">Data Karyawan</h2>
+                                <p id="current-desc" class="text-slate-500 text-sm mt-1">Manajemen basis data kepegawaian perusahaan.</p>
+                            </div>
+                            <div class="flex items-center space-x-3 w-full md:w-auto">
+                                <button onclick="openModal()" class="action-btn flex-1 md:flex-none bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-plus-circle mr-2 text-blue-400"></i> Tambah Data
+                                </button>
+                                <button onclick="exportCSV()" class="action-btn flex-1 md:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-file-excel mr-2"></i> Export Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Table Container -->
+                    <div class="overflow-x-auto custom-scroll">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr id="table-head" class="bg-slate-50/80 border-b border-slate-100">
+                                    <!-- Dinamis -->
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-slate-100">
+                                <!-- Dinamis -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- Empty State -->
+                        <div id="empty-state" class="hidden py-32 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+                                    <i class="fas fa-folder-open text-slate-300 text-4xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-800">Belum Ada Data</h3>
+                                <p class="text-slate-500 max-w-xs mx-auto mt-2 text-sm">Klik tombol Tambah Data untuk mulai mengisi administrasi perusahaan Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form Modern -->
+    <div id="data-modal" class="fixed inset-0 bg-slate-900/40 hidden overflow-y-auto h-full w-full z-50 flex justify-center items-center backdrop-blur-md p-4">
+        <div class="relative mx-auto w-full max-w-lg shadow-2xl rounded-3xl bg-white overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div class="bg-slate-900 p-6 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold" id="modal-title">Entri Data Baru</h3>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Formulir Input Tervalidasi</p>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center bg-slate-800 rounded-full hover:bg-red-500 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="data-form" onsubmit="handleFormSubmit(event)" class="p-8">
+                <input type="hidden" id="edit-index" value="-1">
+                <div id="form-inputs" class="grid grid-cols-1 gap-5 max-h-[60vh] overflow-y-auto pr-2 custom-scroll">
+                    <!-- Dinamis -->
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 mt-10">
+                    <button type="button" onclick="closeModal()" class="flex-1 px-6 py-4 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 font-bold transition-all uppercase text-xs tracking-widest">Batalkan</button>
+                    <button type="submit" class="flex-1 px-6 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 font-bold shadow-xl shadow-blue-100 transition-all uppercase text-xs tracking-widest">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Tabel & Form
+        const CONFIG = {
+            karyawan: {
+                title: "Data Karyawan",
+                desc: "Basis data profil staf dan struktur organisasi.",
+                columns: ["NIK", "Nama Lengkap", "Jabatan", "Departemen", "Status", "Tgl Bergabung", "Telepon"]
+            },
+            inventaris: {
+                title: "Inventaris Barang",
+                desc: "Manajemen aset kantor dan pemeliharaan barang.",
+                columns: ["Kode Barang", "Nama Barang", "Kategori", "Jumlah", "Satuan", "Kondisi", "Lokasi"]
+            },
+            keuangan: {
+                title: "Buku Kas Umum",
+                desc: "Rekapitulasi transaksi keuangan operasional.",
+                columns: ["Tanggal", "No Bukti", "Keterangan", "Debit", "Kredit", "Saldo"]
+            },
+            surat: {
+                title: "Arsip Surat",
+                desc: "Log korespondensi surat masuk dan keluar resmi.",
+                columns: ["Tanggal", "Tipe", "No Surat", "Pihak Terkait", "Perihal", "Status"]
+            }
+        };
+
+        let currentTab = 'karyawan';
+        let db = JSON.parse(localStorage.getItem('admin_pro_db')) || {
+            karyawan: [],
+            inventaris: [],
+            keuangan: [],
+            surat: []
+        };
+
+        // UI Helpers
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-slate-500');
+            });
+            document.getElementById('btn-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.remove('text-slate-500');
+            renderTable();
+        }
+
+        function renderTable() {
+            const config = CONFIG[currentTab];
+            const data = db[currentTab];
+            
+            document.getElementById('current-title').innerText = config.title;
+            document.getElementById('current-desc').innerText = config.desc;
+
+            // Render Head
+            let headHtml = `<tr><th class="px-8 py-5 text-left text-[11px] font-800 text-slate-400 uppercase tracking-widest">#</th>`;
+            config.columns.forEach(col => {
+                headHtml += `<th class="px-8 py-5 text-left text-[11px] font-800 text-slate-400 uppercase tracking-widest">${col}</th>`;
+            });
+            headHtml += `<th class="px-8 py-5 text-center text-[11px] font-800 text-slate-400 uppercase tracking-widest">Opsi</th></tr>`;
+            document.getElementById('table-head').innerHTML = headHtml;
+
+            // Render Body
+            const body = document.getElementById('table-body');
+            const emptyState = document.getElementById('empty-state');
+            body.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                data.forEach((item, index) => {
+                    let rowHtml = `<tr class="hover:bg-slate-50/80 transition-all group">
+                        <td class="px-8 py-5 text-sm font-bold text-slate-400">${index + 1}</td>`;
+                    
+                    config.columns.forEach(col => {
+                        let cellValue = item[col] || '-';
+                        let badgeClass = "";
+                        
+                        // Smart coloring for status
+                        if(cellValue === "Masuk" || cellValue === "Tetap" || cellValue === "Baik") badgeClass = "text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-[11px] font-bold";
+                        if(cellValue === "Keluar" || cellValue === "Rusak") badgeClass = "text-rose-600 bg-rose-50 px-3 py-1 rounded-full text-[11px] font-bold";
+
+                        rowHtml += `<td class="px-8 py-5 text-sm font-semibold text-slate-700">
+                            <span class="${badgeClass}">${cellValue}</span>
+                        </td>`;
+                    });
+
+                    rowHtml += `<td class="px-8 py-5">
+                        <div class="flex justify-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="editRow(${index})" class="w-9 h-9 flex items-center justify-center text-blue-600 hover:bg-blue-50 rounded-xl transition-all">
+                                <i class="fas fa-pencil-alt text-sm"></i>
+                            </button>
+                            <button onclick="deleteRow(${index})" class="w-9 h-9 flex items-center justify-center text-rose-500 hover:bg-rose-50 rounded-xl transition-all">
+                                <i class="fas fa-trash-alt text-sm"></i>
+                            </button>
+                        </div>
+                    </td></tr>`;
+                    body.innerHTML += rowHtml;
+                });
+            }
+        }
+
+        // Form Logic
+        function openModal(editIndex = -1) {
+            const config = CONFIG[currentTab];
+            const formInputs = document.getElementById('form-inputs');
+            const modalTitle = document.getElementById('modal-title');
+            const editIdxInput = document.getElementById('edit-index');
+            
+            formInputs.innerHTML = '';
+            editIdxInput.value = editIndex;
+            modalTitle.innerText = editIndex === -1 ? `Tambah ${config.title}` : `Update Data`;
+
+            const currentData = editIndex !== -1 ? db[currentTab][editIndex] : {};
+
+            config.columns.forEach(col => {
+                const val = currentData[col] || '';
+                let type = "text";
+                if(col.toLowerCase().includes('tgl') || col.toLowerCase().includes('tanggal')) type = "date";
+                if(col.toLowerCase().includes('debit') || col.toLowerCase().includes('kredit') || col.toLowerCase().includes('jumlah')) type = "number";
+
+                formInputs.innerHTML += `
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-800 text-slate-400 uppercase tracking-widest ml-1">${col}</label>
+                        <input type="${type}" name="${col}" value="${val}" required
+                            class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-50 rounded-2xl focus:border-blue-500 focus:bg-white transition-all outline-none font-semibold text-slate-700">
+                    </div>
+                `;
+            });
+
+            document.getElementById('data-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('data-modal').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const entry = {};
+            const editIndex = parseInt(document.getElementById('edit-index').value);
+
+            CONFIG[currentTab].columns.forEach(col => {
+                entry[col] = formData.get(col);
+            });
+
+            if (editIndex === -1) {
+                db[currentTab].push(entry);
+            } else {
+                db[currentTab][editIndex] = entry;
+            }
+
+            localStorage.setItem('admin_pro_db', JSON.stringify(db));
+            closeModal();
+            renderTable();
+        }
+
+        function editRow(index) { openModal(index); }
+
+        function deleteRow(index) {
+            if(confirm("Hapus data ini secara permanen?")) {
+                db[currentTab].splice(index, 1);
+                localStorage.setItem('admin_pro_db', JSON.stringify(db));
+                renderTable();
+            }
+        }
+
+        // --- SMART EXCEL EXPORTER ---
+        function exportCSV() {
+            const config = CONFIG[currentTab];
+            const data = db[currentTab];
+            if(data.length === 0) return alert("Tambahkan data terlebih dahulu sebelum export.");
+
+            // KUNCI UTAMA: Tambahkan 'sep=,' agar Excel otomatis membagi kolom
+            let csvContent = "sep=,\n";
+            
+            // Header
+            csvContent += config.columns.join(",") + "\n";
+            
+            // Body
+            data.forEach(row => {
+                let values = config.columns.map(col => {
+                    let cellVal = (row[col] || "").toString().replace(/"/g, '""');
+                    // Bungkus dengan kutip jika mengandung koma
+                    return `"${cellVal}"`;
+                });
+                csvContent += values.join(",") + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            const fileName = `${config.title.replace(/\s/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Live Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('id-ID');
+        }, 1000);
+
+        window.onload = renderTable;
+    </script>
 </body>
 </html>
